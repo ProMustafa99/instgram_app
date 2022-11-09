@@ -18,6 +18,8 @@ class Get_Info_cubit extends Cubit<Info_user> {
 
   InfoUserModel Info_user = InfoUserModel("","","","","","","");
   post_model post_user = post_model("","","","","","");
+  
+  List<InfoUserModel> users_list =[];
 
   var post ="";
   void Data_user() async {
@@ -56,48 +58,28 @@ class Get_Info_cubit extends Cubit<Info_user> {
     });
 
   }
-
-  void add_post ()  async {
-
-    Data = Cash_Data();
-    var cheeck_id = await Data.getData(key: "user_id");
-    FirebaseFirestore.instance.collection("user").doc("${cheeck_id}")
-        .collection("post")
-        .doc("${cheeck_id}")
-        .set(
-        {
-            'Post':"Hello Word All",
-        }).
-        then((value) {
-         print("Done Create Post ");
-        }).
-          catchError((e){
-            print("HERE ERROE  ${e.toString()}");
-        });
-
-  }
-
-
-  void get_post_user ()  async {
-
-    Data = Cash_Data();
-    var cheeck_id = await Data.getData(key: "user_id");
-    emit(Loading_Get_post());
-    FirebaseFirestore.instance.collection("user")
-        .doc("${cheeck_id}")
-        .collection("post")
-        .doc("123")
-        .get()
-        .then((value)
-        {
-          post_user = post_model.fromJson(value.data()!);
-          print(post_user.name);
-          emit(Sussess_state_Get_post());
-          print(" ####################### Done Get Post #######################");
-        }).catchError((e) {
-         print(" ************** HERE ERORR IN POST ${e.toString()} *************************");
-        });
-
+  
+  void get_all_user() {
+    emit(Loading_Get_all_user());
+    FirebaseFirestore.instance.
+    collection("user").
+    get().
+    then((value) {
+      value.docs.forEach((users) async{
+         Data = Cash_Data();
+          var cheeck_id = await Data.getData(key: "user_id");
+          if (users.id != cheeck_id) {
+            users_list.add(InfoUserModel.fromJson(users.data()));
+          }
+      });
+        emit(Sussess_state_Get_all_user());
+      print("Done Get All Users");
+    }).
+    catchError((error){
+      print("Cant Get All Users");
+      print("${error}");
+      emit(Error_state_Get_all_user());
+    });
   }
 
 }

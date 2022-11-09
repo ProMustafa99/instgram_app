@@ -25,3 +25,12 @@ class Loading_Get_post  extends Info_user{}
 class Sussess_state_Get_post  extends Info_user{}
 
 class Error_state_Get_post  extends Info_user{}
+
+//Get All Users
+
+
+class Loading_Get_all_user  extends Info_user{}
+
+class Sussess_state_Get_all_user extends Info_user{}
+
+class Error_state_Get_all_user extends Info_user{}

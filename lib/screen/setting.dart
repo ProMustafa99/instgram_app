@@ -148,7 +148,7 @@ class _settingState extends State<setting> {
                     Expanded(
                         child:OutlinedButton(
                           onPressed: () {
-                            Get_Info_cubit.get(context).add_post();
+                            // Get_Info_cubit.get(context).add_post();
                           },
                           child: Text("Add Photoes"""),)
                     ),
