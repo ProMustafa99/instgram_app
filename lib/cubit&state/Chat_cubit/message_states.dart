@@ -17,3 +17,8 @@ class Loading_get_message extends message_state{}
 class Sussess_state_get_message extends message_state{}
 
 class Error_state_get_message extends message_state{}
+//
+
+class Sussess_state_get_all_message extends message_state{}
+
+

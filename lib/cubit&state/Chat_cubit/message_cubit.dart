@@ -13,10 +13,6 @@ class Message_cubit extends Cubit<message_state> {
 
   void sendMessgae({required receiverId , required Date_Time , required Text}) async {
 
-    //late String senderId;
-    //   late String receiverId;
-    //   late String Date_Time;
-    //   late String Text;
 
     Data = Cash_Data();
     var cheeck_id = await Data.getData(key: "user_id");
@@ -56,5 +52,45 @@ class Message_cubit extends Cubit<message_state> {
     catchError((error){
       emit(Error_state_get_message());
     });
+  }
+
+  List <MessageModel> Messages = [];
+  void Get_Message( {required receiverId}) async {
+    Data = Cash_Data();
+    var cheeck_id = await Data.getData(key: "user_id");
+
+    // FirebaseFirestore.instance.
+    // collection("user").
+    // doc("$cheeck_id").
+    // collection("chats").
+    // snapshots().
+    // listen((event)
+    // {
+    //   event.docs.forEach((element) {
+    //     Messages.add(MessageModel.fromJson(element.data()));
+    //     print("Done Get All Message");
+    //   });
+    //
+    //   emit(Sussess_state_get_all_message());
+    // });
+    
+    FirebaseFirestore.instance.
+    collection("user").
+    doc("$cheeck_id").
+    collection("chats").
+    doc("$receiverId").
+    collection("messages").
+    orderBy('Date_Time').
+    snapshots().listen((event) {
+      Messages =[];
+      event.docs.forEach((element) {
+        Messages.add(MessageModel.fromJson(element.data()));
+        print("Done Get All Message");
+        emit(Sussess_state_get_all_message());
+      });
+
+    });
+    
+
   }
 }
